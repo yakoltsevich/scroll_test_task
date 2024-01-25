@@ -1,11 +1,12 @@
 .card {
-  height: 25vh;
+  height: 27vh;
+  min-height: 200px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #bbeeee;
-  margin: 10px;
+  margin: 0.8vh;
   border-radius: 10px;
   background-repeat: no-repeat;
   background-position: center;
@@ -15,7 +16,7 @@
   box-shadow: 5px 8px 33px -27px rgba(66, 68, 90, 1);
 
   &:hover {
-    transform: translateX(-5px) scale(1.01);
+    transform: scale(1.02);
     -webkit-box-shadow: 5px 16px 33px -19px rgba(66, 68, 90, 1);
     -moz-box-shadow: 5px 16px 33px -19px rgba(66, 68, 90, 1);
     box-shadow: 5px 16px 33px -19px rgba(66, 68, 90, 1);

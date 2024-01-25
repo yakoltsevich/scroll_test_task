@@ -1,0 +1,38 @@
+@import "src/App";
+
+//desktop screen
+.table {
+  width: 80%;
+  height: 85%;
+  min-width: 770px;
+  display: grid;
+  justify-content: space-evenly;
+  grid-template-columns: 1fr 1fr 1fr;
+  overflow-y: scroll;
+  margin: 5% 0;
+  position: relative;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+//mobile screen
+@media screen and (max-width: $mobile_screen_width) {
+  .table {
+    width: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    grid-template-columns: 1fr;
+  }
+}
+
+//tablet screen
+@media screen and (min-width: $mobile_screen_width) and (max-width: $tablet_width) {
+  .table {
+    width: 80%;
+    min-width: 80%;
+    min-height: 350px;
+    grid-template-columns: 1fr  1fr;
+  }
+}

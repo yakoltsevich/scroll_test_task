@@ -1,10 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Item} from './Item';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Card} from './Card';
 import axios from "axios";
+import './Table.scss'
 
 const API_URL = `https://rickandmortyapi.com/api/character`
 
-const PostList = () => {
+export const Table = () => {
     const [data, setData] = useState([]);
     const [nextPageUrl, setNextPageUrl] = useState(API_URL);
     const [fetching, setFetching] = useState(true);
@@ -12,17 +13,12 @@ const PostList = () => {
     const myRef = useRef(null);
 
     useEffect(() => {
-        myRef.current.addEventListener('scroll', scrollHandler)
-        return () => myRef.current.removeEventListener('scroll', scrollHandler)
+        const {current} = myRef
+        current.addEventListener('scroll', scrollHandler)
+        return () => current.removeEventListener('scroll', scrollHandler)
     }, [myRef])
 
-    useEffect(() => {
-        if (fetching && nextPageUrl) {
-            getNewData()
-        }
-    }, [fetching, nextPageUrl])
-
-    const getNewData = () => {
+    const getNewData = useCallback(() => {
         axios.get(nextPageUrl)
             .then((response) => {
                 const results = response?.data?.results
@@ -32,22 +28,25 @@ const PostList = () => {
             })
             .catch(err => console.log('error', err))
             .finally(() => setFetching(false))
-    }
+    }, [data, nextPageUrl])
+
+    useEffect(() => {
+        if (fetching && nextPageUrl) {
+            getNewData()
+        }
+    }, [fetching, nextPageUrl, getNewData])
 
     const scrollHandler = (e) => {
         const {scrollHeight, scrollTop} = e?.target
-        if (scrollHeight - (scrollTop + myRef.current.offsetHeight) < scrollHeight * 0.25) {
+        const {offsetHeight} = myRef?.current
+        if (scrollHeight - (scrollTop + offsetHeight) < scrollHeight * 0.25) {
             setFetching(true)
         }
     }
 
     return (
-            <div ref={myRef} className='wrapper'>
-                {data.map(item => {
-                    return <Item key={item.id} item={item}/>
-                })}
-            </div>
+        <div ref={myRef} className='table'>
+            {data.map(item => <Card key={item.id} item={item}/>)}
+        </div>
     );
 };
-
-export default PostList;
